@@ -18,8 +18,10 @@ class HotelTest(MycroftSkill):
     #Spiegellampe Kaputt Prozess
     @intent_handler(IntentBuilder("DamageReportingIntent").require('DamageReportingKeyword').optionally('location'))
     def handle_damage_reporting_intent(self, message):
+        self.log.info(message.data.get("location"))
         schaden = self.get_response('DamageReportingFirstQuestion')
-        self.log.info(schaden)
+        self.speak_dialog('Vielen Dank, dass du uns dein Problem meldest.')
+
     
 
 
