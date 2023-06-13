@@ -12,7 +12,15 @@ class HotelTest(MycroftSkill):
 
     @intent_handler(IntentBuilder('BreakfastTimeIntent').require('BreakfastTimesKeyword'))
     def handle_breakfast_times_intent(self, message):
-        self.speak_dialog('test.hotel.dialog')
+        self.log.info(message)
+        self.speak_dialog('test.hotel')
+
+    #Spiegellampe Kaputt Prozess
+    @intent_handler(IntentBuilder("DamageReportingIntent").require('DamageReportingKeyword').optionally('location'))
+    def handle_damage_reporting_intent(self, message):
+        schaden = self.get_response('DamageReportingFirstQuestion')
+        self.log.info(schaden)
+    
 
 
 def create_skill():
