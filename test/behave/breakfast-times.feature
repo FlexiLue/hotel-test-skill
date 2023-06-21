@@ -2,7 +2,7 @@ Feature: breakfast-times
   Scenario Outline: asking for breakfast times
     Given an english speaking user
       When the user says "<breakfast times sentence>"
-      Then "hotel-test" should reply with dialog from "test.hotel.dialog"
+      Then "hotel-test" should reply with dialog from "BreakfastTimesInfo"
 
    Examples: breakfast times sentences
         | breakfast times sentence |
