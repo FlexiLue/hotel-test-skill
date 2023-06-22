@@ -18,3 +18,4 @@ Feature: sightseeing-options
         | Was kann man hier erkunden |
         | Was kann man in der Stadt hier sehen |
         | Was kann man hier sehen |
+        | Was kann ich in der Gegend anschauen |
