@@ -17,6 +17,10 @@ class HotelTest(MycroftSkill):
         self.log.info(schaden)
         self.speak_dialog("DamageReportingEndSentence")
 
+    @intent_handler(IntentBuilder("SightseeingOptionsIntent").one_of("SightseeingActionKeyword", "SightseeingKeyword"))
+    def handle_sightseeing_options_intent(self, message):
+        self.speak_dialog("SightseeingOptionsList")
+
     
 
 
