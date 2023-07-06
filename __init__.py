@@ -5,7 +5,7 @@ from adapt.intent import IntentBuilder
 class HotelTest(MycroftSkill):
     def __init__(self):
         MycroftSkill.__init__(self)
-        self.sightseeing_options = ["Altstadt Bad Wimpfen", "Salzbergwerk", "Burg Hornberg", "Burg Guttenberg", "Experimenta"]
+        self.sightseeing_options = ["Altstadt Bad Wimpfen", "Salzbergwerk", "Burg Hornberg", "Burg Guttenberg", "Experimenta", "Nein danke"]
         self.sightseeing_options_mappping = {
             "Altstadt Bad Wimpfen": "AltstadtBadWimpfenInfo",
             "Salzbergwerk": "SalzbergwerkInfo",
@@ -37,11 +37,20 @@ class HotelTest(MycroftSkill):
         self.speak_dialog("SightseeingOptionsList")
         sightseeing_option = self.ask_selection(self.sightseeing_options, "", None, 0.5, False)
         self.log.info(sightseeing_option)
-        self.speak_dialog(self.sightseeing_options_mappping.get(sightseeing_option))
+        if sightseeing_option and sightseeing_option != "Nein danke":
+            self.speak_dialog(self.sightseeing_options_mappping.get(sightseeing_option))
+            answer = self.ask_yesno("SightseeingTourUpSell", {"sightseeing_option": sightseeing_option})
+            if answer == "yes":
+                self.speak("Ok, vielen Dank. Das Ticket wird dir per im Hotel angegebener E-Mail zugesendet. Bezahlen kannst du es am Ende des Aufenthalts.")
+            if answer == "no":
+                self.speak("Alles klar, wir wünschen dir viel Spaß beim Erkunden.")
+        else:
+            self.speak_dialog("SightseeingOptionsEndWithoutDetails")
 
-    
+    @intent_handler(IntentBuilder("SwimmingPoolOccupancyIntent").require("SwimmingPoolKeyword"))
+    def handle_swimming_pool_occupancy_intent(self, message):
+        self.speak("Die momentane Auslastung ist niedrig.")
 
 
 def create_skill():
     return HotelTest()
-
