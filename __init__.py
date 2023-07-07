@@ -48,13 +48,10 @@ class HotelTest(MycroftSkill):
         else:
             self.speak_dialog("SightseeingOptionsEndWithoutDetails")
 
-    @intent_handler(IntentBuilder("SwimmingPoolOccupancyIntent").require("SwimmingPoolKeyword"))
-    def handle_swimming_pool_occupancy_intent(self, message):
-        self.speak("Die momentane Auslastung ist niedrig.")
 
     @intent_handler(IntentBuilder("RoomServiceIntent").require("RoomServiceKeyword"))
     def handle_swimming_pool_occupancy_intent(self, message):
-        self.speak("Wir haben momentan folgende Speisen auf der Karte")
+        self.speak("Wir haben momentan folgende Speisen auf der Karte. Wähle eine der Optionen.")
         food_option = self.ask_selection(self.food_options, "", None, 0.5, False)
         self.log.info(food_option)
         answer = self.ask_yesno("RoomServiceConfirmation", {"food_option": food_option})
@@ -63,6 +60,9 @@ class HotelTest(MycroftSkill):
         else:
             self.speak("Falls du doch nochmal hunger hast, melde dich gerne erneut bei mir")
 
+    @intent_handler(IntentBuilder("SwimmingPoolOccupancyIntent").require("SwimmingPoolKeyword"))
+    def handle_swimming_pool_occupancy_intent(self, message):
+        self.speak("Die momentane Auslastung ist niedrig.")
 
 
 def create_skill():
