@@ -13,6 +13,7 @@ class HotelTest(MycroftSkill):
             "Burg Guttenberg": "BurgGuttenbergInfo",
             "Experimenta": "ExperimentaInfo"
         }
+        self.food_options = ["Schnitzel mit Pommes", "Käsespätzle", "Maultaschen mit Salat", "Chicken Nuggets"]
 
     def sightseeing_options_validator(self, response):
         requested_sightseeing_options = []
@@ -41,7 +42,7 @@ class HotelTest(MycroftSkill):
             self.speak_dialog(self.sightseeing_options_mappping.get(sightseeing_option))
             answer = self.ask_yesno("SightseeingTourUpSell", {"sightseeing_option": sightseeing_option})
             if answer == "yes":
-                self.speak("Ok, vielen Dank. Das Ticket wird dir per im Hotel angegebener E-Mail zugesendet. Bezahlen kannst du es am Ende des Aufenthalts.")
+                self.speak("Ok, vielen Dank. Das Ticket wird dir per im Hotel angegebener E-Mail zugesendet. Dort findest du alle weiteren Informationen. Bezahlen kannst du es am Ende des Aufenthalts.")
             if answer == "no":
                 self.speak("Alles klar, wir wünschen dir viel Spaß beim Erkunden.")
         else:
@@ -50,6 +51,18 @@ class HotelTest(MycroftSkill):
     @intent_handler(IntentBuilder("SwimmingPoolOccupancyIntent").require("SwimmingPoolKeyword"))
     def handle_swimming_pool_occupancy_intent(self, message):
         self.speak("Die momentane Auslastung ist niedrig.")
+
+    @intent_handler(IntentBuilder("RoomServiceIntent").require("RoomServiceKeyword"))
+    def handle_swimming_pool_occupancy_intent(self, message):
+        self.speak("Wir haben momentan folgende Speisen auf der Karte")
+        food_option = self.ask_selection(self.food_options, "", None, 0.5, False)
+        self.log.info(food_option)
+        answer = self.ask_yesno("RoomServiceConfirmation", {"food_option": food_option})
+        if answer == "yes":
+            self.speak("Vielen Dank, die Bestellung ist so eben in der Küche eingegangen und wird dir bald gebracht.")
+        else:
+            self.speak("Falls du doch nochmal hunger hast, melde dich gerne erneut bei mir")
+
 
 
 def create_skill():
