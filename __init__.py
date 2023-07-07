@@ -34,13 +34,15 @@ class HotelTest(MycroftSkill):
         self.speak_dialog("DamageReportingEndSentence")
 
     @intent_handler(IntentBuilder("RoomServiceIntent").require("RoomServiceKeyword"))
-    def handle_swimming_pool_occupancy_intent(self, message):
+    def handle_room_service_intent(self, message):
         self.speak("Wir haben momentan folgende Speisen auf der Karte. Wähle eine der Optionen.")
         food_option = self.ask_selection(self.food_options, "", None, 0.5, False)
-        self.log.info(food_option)
-        answer = self.ask_yesno("RoomServiceConfirmation", {"food_option": food_option})
-        if answer == "yes":
-            self.speak("Vielen Dank, die Bestellung ist so eben in der Küche eingegangen und wird dir bald gebracht.")
+        if food_option is not None:
+            answer = self.ask_yesno("RoomServiceConfirmation", {"food_option": food_option})
+            if answer == "yes":
+                self.speak("Vielen Dank, die Bestellung ist so eben in der Küche eingegangen und wird dir bald gebracht.")
+            else:
+                self.speak("Falls du doch nochmal hunger hast, melde dich gerne erneut bei mir")
         else:
             self.speak("Falls du doch nochmal hunger hast, melde dich gerne erneut bei mir")
 
@@ -63,7 +65,6 @@ class HotelTest(MycroftSkill):
                 self.speak("Alles klar, wir wünschen dir viel Spaß beim Erkunden.")
         else:
             self.speak_dialog("SightseeingOptionsEndWithoutDetails")
-
 
 def create_skill():
     return HotelTest()
