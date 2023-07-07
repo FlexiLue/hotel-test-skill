@@ -33,22 +33,6 @@ class HotelTest(MycroftSkill):
         self.log.info(schaden)
         self.speak_dialog("DamageReportingEndSentence")
 
-    @intent_handler(IntentBuilder("SightseeingOptionsIntent").one_of("SightseeingActionKeyword", "SightseeingKeyword"))
-    def handle_sightseeing_options_intent(self, message):
-        self.speak_dialog("SightseeingOptionsList")
-        sightseeing_option = self.ask_selection(self.sightseeing_options, "", None, 0.5, False)
-        self.log.info(sightseeing_option)
-        if sightseeing_option and sightseeing_option != "Nein danke":
-            self.speak_dialog(self.sightseeing_options_mappping.get(sightseeing_option))
-            answer = self.ask_yesno("SightseeingTourUpSell", {"sightseeing_option": sightseeing_option})
-            if answer == "yes":
-                self.speak("Ok, vielen Dank. Das Ticket wird dir per im Hotel angegebener E-Mail zugesendet. Dort findest du alle weiteren Informationen. Bezahlen kannst du es am Ende des Aufenthalts.")
-            if answer == "no":
-                self.speak("Alles klar, wir wünschen dir viel Spaß beim Erkunden.")
-        else:
-            self.speak_dialog("SightseeingOptionsEndWithoutDetails")
-
-
     @intent_handler(IntentBuilder("RoomServiceIntent").require("RoomServiceKeyword"))
     def handle_swimming_pool_occupancy_intent(self, message):
         self.speak("Wir haben momentan folgende Speisen auf der Karte. Wähle eine der Optionen.")
@@ -63,6 +47,22 @@ class HotelTest(MycroftSkill):
     @intent_handler(IntentBuilder("SwimmingPoolOccupancyIntent").require("SwimmingPoolKeyword"))
     def handle_swimming_pool_occupancy_intent(self, message):
         self.speak("Die momentane Auslastung ist niedrig.")
+
+    @intent_handler(IntentBuilder("SightseeingOptionsIntent").one_of("SightseeingActionKeyword", "SightseeingKeyword"))
+    def handle_sightseeing_options_intent(self, message):
+        self.speak_dialog("SightseeingOptionsList")
+        sightseeing_option = self.ask_selection(self.sightseeing_options, "", None, 0.5, False)
+        self.log.info(sightseeing_option)
+        if sightseeing_option and sightseeing_option != "Nein danke":
+            self.speak_dialog(self.sightseeing_options_mappping.get(sightseeing_option))
+            answer = self.ask_yesno("SightseeingTourUpSell", {"sightseeing_option": sightseeing_option})
+            if answer == "yes":
+                self.speak(
+                    "Ok, vielen Dank. Das Ticket wird dir per im Hotel angegebener E-Mail zugesendet. Dort findest du alle weiteren Informationen. Bezahlen kannst du es am Ende des Aufenthalts.")
+            if answer == "no":
+                self.speak("Alles klar, wir wünschen dir viel Spaß beim Erkunden.")
+        else:
+            self.speak_dialog("SightseeingOptionsEndWithoutDetails")
 
 
 def create_skill():
